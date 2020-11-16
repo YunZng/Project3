@@ -1,15 +1,18 @@
 import random
-# Ask for customized road grid and start point
+# Ask for customized road grid size
 print("Precondition: Row/column should be greater than 2")
 x=(int)(input("How many columns?"))
 y=(int)(input("How many rows?"))
+# If the dimension of the grid is less than 2, then one of the method won't work, exit
 if (x<=2 or y<=2):
 	exit()
-choice=(int)(input("Which method would you like to choose? 1 or 2 or 3(Random direction)? (Just choose a number)"))
-#Create the x y coordinates, and the road lists
+#Here you get to choose 3 methods
+#Method 1 covers the grid square by square in order, starts from bottom left of the map and finishes at the top right
+#Method 2 finishes all the rows first then finish all the columns
+#Method 3 will just bump around the map randomly until all the roads are cleared
+choice=(int)(input("Which method would you like to choose? 1 or 2 or 3? (Just choose a number)"))
 
-
-#Input values for xy coordinates, which consist of the road number in each direction [East,South,West,North]
+#Node is the point connecting the road in 4 directions, each node represents the road number in each direction [East,South,West,North], and the x-y coordinate of the node is the same as the index in the 2D list.
 def createNode():
 	global node
 	node=[]
@@ -17,17 +20,15 @@ def createNode():
 		node.append([])
 		for j in range (y):
 			node[i].append([0,0,0,0])
-#print(node)
 
-#Number all roads
+#Create the appropriate amount of roads in the grid, each road/edge will have a unique number
 def createRoad():
 	global road
 	road=[]
 	for i in range (2*x*y-x-y):
 		road.append(i+1);
-#print(road)
 
-#Label the inner block of roads
+#Calling this function will generate a map with customized size and all labeled roads
 def createMap():
 	global node, x, y, road,timer, moveX,moveY
 	createRoad()
@@ -35,6 +36,7 @@ def createMap():
 	timer=0
 	moveX=0
 	moveY=0
+	# All the inner roads will be labeled in this chunck
 	for i in range (1,x-1):
 		for j in range (1,y-1):
 			for check in range (4):
@@ -55,7 +57,7 @@ def createMap():
 					node[i][j][3]=road[0]
 					road.pop(0)
 
-#Fill up the rest of the outter roads
+	#All the outter roads will be labeled in this chunck
 	for i in range (x-1):
 		node[i][0][0]=road[0]
 		node[i+1][0][2]=road[0]
@@ -72,15 +74,12 @@ def createMap():
 		node[0][j][1]=road[0]
 		node[0][j-1][3]=road[0]
 		road.pop(0)
-#Shows a labeled map
-createMap()
-for k in node:
-	print(k)
 
-#Essential variables to determine moves and count time
+#createMap()
+#for k in node:
+#	print(k)
 
-
-#Helper function that uses global variables to move the robot
+#Helper function that uses global variables to move the robot, each time the robot moves, it updates its location, count the time, and marks its path as cleared
 def move(direction):
 	global timer,moveX,moveY,road,node
 	if(direction=="left"):
@@ -109,19 +108,20 @@ def move(direction):
 		moveY-=1
 	timer+=1
 
+#This is used for method 1 to move the robot to the lower right of the map
 def goRight():
 	global timer,moveX,moveY,road,node
 	while(moveX!=x-1 and moveY!=0):
 		move("right")
 		move("down")
 
+#This is used for method 1 to move the robot to the upper left of the map
 def goUp():
 	global timer,moveX,moveY,road,node
 	while(moveX!=0 and moveY!=y-1):
 		move("up")
 		move("left")
-#Try to cover all the roads
-#The 
+
 createMap()
 if (choice==1):
 	move("right")
@@ -181,7 +181,6 @@ if (choice==1):
 				moveY+=2
 				timer+=2
 elif (choice==2):
-	timer-=1
 	while(True):
 		for i in range (x-1):
 			move("right")
@@ -219,6 +218,7 @@ elif (choice==2):
 				break
 elif(choice==3):
 	trials=[]
+	#Do 50 trials
 	for tri in range (50):
 		print("Trial ",tri+1)
 		createMap()
@@ -250,9 +250,14 @@ elif(choice==3):
 					move("left")
 				elif(pick==3 and node[moveX][moveY][pick]!=0):
 					move("up")
+		#Record the time used in each trial
 		trials.append(timer)
+	#Set get the fastest time
 	timer=min(trials)
+	#Prints the trial with the fastest time
 	print("Trial", trials.index(timer)+1," took the least time")
+#Indicates the total/best time used in specific case.
 print("Took ",timer," minutes to clear.")
+#This should show a list of lists of lists of 0, which means all the roads are cleared
 for k in node:
 	print(k)
