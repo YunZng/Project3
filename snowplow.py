@@ -1,74 +1,84 @@
+import random
 # Ask for customized road grid and start point
 print("Precondition: Row/column should be greater than 2")
 x=(int)(input("How many columns?"))
 y=(int)(input("How many rows?"))
 if (x<=2 or y<=2):
 	exit()
-choice=(int)(input("Which method would you like to choose? 1 or 2? (Just choose a number)"))
+choice=(int)(input("Which method would you like to choose? 1 or 2 or 3(Random direction)? (Just choose a number)"))
 #Create the x y coordinates, and the road lists
-node=[]
-road=[]
+
 
 #Input values for xy coordinates, which consist of the road number in each direction [East,South,West,North]
-for i in range (x):
-	node.append([])
-	for j in range (y):
-		node[i].append([0,0,0,0])
+def createNode():
+	global node
+	node=[]
+	for i in range (x):
+		node.append([])
+		for j in range (y):
+			node[i].append([0,0,0,0])
 #print(node)
 
 #Number all roads
-for i in range (2*x*y-x-y):
-	road.append(i+1);
+def createRoad():
+	global road
+	road=[]
+	for i in range (2*x*y-x-y):
+		road.append(i+1);
 #print(road)
-totalRoad=len(road)
-print(totalRoad)
 
 #Label the inner block of roads
-for i in range (1,x-1):
-	for j in range (1,y-1):
-		for check in range (4):
-			if (node[i][j][0]==0):
-				node[i+1][j][2]=road[0]
-				node[i][j][0]=road[0]
-				road.pop(0)
-			if(node[i][j][1]==0):
-				node[i][j-1][3]=road[0]
-				node[i][j][1]=road[0]
-				road.pop(0)
-			if(node[i][j][2]==0):
-				node[i-1][j][0]=road[0]
-				node[i][j][2]=road[0]
-				road.pop(0)
-			if(node[i][j][3]==0):
-				node[i][j+1][1]=road[0]
-				node[i][j][3]=road[0]
-				road.pop(0)
+def createMap():
+	global node, x, y, road,timer, moveX,moveY
+	createRoad()
+	createNode()
+	timer=0
+	moveX=0
+	moveY=0
+	for i in range (1,x-1):
+		for j in range (1,y-1):
+			for check in range (4):
+				if (node[i][j][0]==0):
+					node[i+1][j][2]=road[0]
+					node[i][j][0]=road[0]
+					road.pop(0)
+				if(node[i][j][1]==0):
+					node[i][j-1][3]=road[0]
+					node[i][j][1]=road[0]
+					road.pop(0)
+				if(node[i][j][2]==0):
+					node[i-1][j][0]=road[0]
+					node[i][j][2]=road[0]
+					road.pop(0)
+				if(node[i][j][3]==0):
+					node[i][j+1][1]=road[0]
+					node[i][j][3]=road[0]
+					road.pop(0)
 
 #Fill up the rest of the outter roads
-for i in range (x-1):
-	node[i][0][0]=road[0]
-	node[i+1][0][2]=road[0]
-	road.pop(0)
-for j in range (y-1):
-	node[x-1][j][3]=road[0]
-	node[x-1][j+1][1]=road[0]
-	road.pop(0)
-for i in range (x-1,0,-1):
-	node[i][y-1][2]=road[0]
-	node[i-1][y-1][0]=road[0]
-	road.pop(0)
-for j in range (y-1,0,-1):
-	node[0][j][1]=road[0]
-	node[0][j-1][3]=road[0]
-	road.pop(0)
+	for i in range (x-1):
+		node[i][0][0]=road[0]
+		node[i+1][0][2]=road[0]
+		road.pop(0)
+	for j in range (y-1):
+		node[x-1][j][3]=road[0]
+		node[x-1][j+1][1]=road[0]
+		road.pop(0)
+	for i in range (x-1,0,-1):
+		node[i][y-1][2]=road[0]
+		node[i-1][y-1][0]=road[0]
+		road.pop(0)
+	for j in range (y-1,0,-1):
+		node[0][j][1]=road[0]
+		node[0][j-1][3]=road[0]
+		road.pop(0)
 #Shows a labeled map
+createMap()
 for k in node:
 	print(k)
 
 #Essential variables to determine moves and count time
-timer=0
-moveX=0
-moveY=0
+
 
 #Helper function that uses global variables to move the robot
 def move(direction):
@@ -112,7 +122,7 @@ def goUp():
 		move("left")
 #Try to cover all the roads
 #The 
-
+createMap()
 if (choice==1):
 	move("right")
 	goUp()
@@ -207,7 +217,42 @@ elif (choice==2):
 				move("left")
 			else:
 				break
-
+elif(choice==3):
+	trials=[]
+	for tri in range (50):
+		print("Trial ",tri+1)
+		createMap()
+		while(True):
+			countStop=0
+			for i in range(x):
+				for j in range (y):
+					if(node[i][j]==[0,0,0,0]):
+						countStop+=1
+			if(countStop==x*y):
+				break
+			if (node[moveX][moveY]==[0,0,0,0]):
+				pick=random.randint(0,3)
+				if(pick==0 and moveX!=x-1):
+					move("right")
+				elif(pick==1 and moveY!=0):
+					move("down")
+				elif(pick==2 and moveX!=0):
+					move("left")
+				elif(pick==3 and moveY!=y-1):
+					move("up")
+			else:
+				pick=random.randint(0,3)
+				if (pick==0 and node[moveX][moveY][pick]!=0):
+					move("right")
+				elif(pick==1 and node[moveX][moveY][pick]!=0):
+					move("down")
+				elif(pick==2 and node[moveX][moveY][pick]!=0):
+					move("left")
+				elif(pick==3 and node[moveX][moveY][pick]!=0):
+					move("up")
+		trials.append(timer)
+	timer=min(trials)
+	print("Trial", trials.index(timer)+1," took the least time")
 print("Took ",timer," minutes to clear.")
 for k in node:
 	print(k)
