@@ -1,0 +1,10 @@
+To be continued... (will attach a word document)
+
+Project 3 Description
+Team Lahray, Yulun, Sydney, Yiyuan
+Option 3: snowplow
+
+For the project, we chose the third option to simulate a snowplowing robot cleaning a network of snow-covered roads. In the first portion of the code, we made several helper functions to build a custom map with grids and roads connecting all the nodes: 
+1.	createNode(): we declared a global variable of list of nodes as “intersections”, or points which connects the roads going in four direction: East, South, West, North. The indices x and y are the coordinates of all nodes, or intersections. Each node represents the adjacent roads going in four directions. 
+2.	createRoad(): in create road, we declared a global list variable of roads and generated appropriate amount of roads for the grid. 
+3.	createMap():
