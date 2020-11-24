@@ -26,7 +26,7 @@ def createRoad():
 	global road
 	road=[]
 	for i in range (2*x*y-x-y):
-		road.append(i+1);
+		road.append(i+1)
 
 #Calling this function will generate a map with customized size and all labeled roads
 def createMap():
