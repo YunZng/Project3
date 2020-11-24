@@ -16,4 +16,4 @@ Option 3: snowplow
     Option 2. Cleaning all the rows first then finish all the finishes all the rows first then finish all the columns of the grid. 
     Option 3. Default movement: choosing a random path of reachable nodes connected by snowy edges. 
 	*At the end of the main function, we output the robot’s movement and time for completion. 
-After running through trails of different sizes of road networks, we concluded that the default automatic snowplowing is significant less efficient comparing to the other methods of plowing as the grid size becomes larger. However, in some small samples where the grid size is small, for example a 5x5 grid, the default method can be faster than the other two since there are significant less roads to cover.
+After running through trails of different sizes of road networks, we concluded that the default automatic snowplowing is less efficient comparing to the other methods of plowing as the grid size becomes larger. However, in some small samples where the grid size is small, for example a 5x5 grid, the default method can be faster than the other two since there are significant less roads to cover.
