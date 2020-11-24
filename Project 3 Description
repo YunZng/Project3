@@ -1,10 +1,19 @@
-To be continued... (will attach a word document)
-
 Project 3 Description
-Team Lahray, Yulun, Sydney, Yiyuan
+Team Lahray, Yulun, Sydney, Yuyuan
 Option 3: snowplow
 
-For the project, we chose the third option to simulate a snowplowing robot cleaning a network of snow-covered roads. In the first portion of the code, we made several helper functions to build a custom map with grids and roads connecting all the nodes: 
-1.	createNode(): we declared a global variable of list of nodes as “intersections”, or points which connects the roads going in four direction: East, South, West, North. The indices x and y are the coordinates of all nodes, or intersections. Each node represents the adjacent roads going in four directions. 
-2.	createRoad(): in create road, we declared a global list variable of roads and generated appropriate amount of roads for the grid. 
-3.	createMap():
+	For the project, we chose the third option to simulate a snowplowing robot cleaning a network of snow-covered roads. To calculate the time needed for cleaning, we decided to (1). generate our own map of nodes and edges as intersections and roads connecting the intersections, (2). define a series of helper functions to simulate the movement of the robot, and (3). defines algorithms for the snowplowing robot to clean all roads, including the automated mode. In this project, Yulun and Yuyuan worked on the necessary codes; Sydney and Lahray worked on project description and presentation. 
+
+	In the first portion of the code, we made several helper functions to build a custom map with grids and roads connecting all the nodes: 
+    1. createNode(): we declared a global variable of list of nodes as “intersections”, or points which connects the roads going in four direction: East, South, West, North. The indices x and y are the coordinates of all nodes, or intersections. Each node represents the adjacent roads going in four directions. 
+    2. createRoad(): in create road, we declared a global list variable of roads and generated appropriate amount of roads for the grid. 
+    3. createMap(): this function calls the former two functions to generate a grid map of intersections/nodes connected by a network of roads. The createMap() function also is responsible of labeling all the roads created by the former helper function. And the robot should navigate within this generated map. 
+	The second section is all the helper functions that defines the general rules of movement for robot to navigate the established grid:
+    1. move(direction): this function inputs robot movement to any direction and update the location of the robot, mark the edge/road as snow-free, and accumulate the time needed after each movement.
+    2. goRight() & goUp(), etc: defines the basic movement of robot, and return the movement. 
+	The third section is the main function: it calls createMap() and start the robot from the bottom left corner of the grid. In this section, the user is given a choice of using different algorithms/movement rules for the robot to traverse within the road network:
+    Option 1. Traversing and cleaning through the entire grid by moving through a “square” movement from the outmost layer to the inner layers accordingly. 
+    Option 2. Cleaning all the rows first then finish all the finishes all the rows first then finish all the columns of the grid. 
+    Option 3. Default movement: choosing a random path of reachable nodes connected by snowy edges. 
+	*At the end of the main function, we output the robot’s movement and time for completion. 
+After running through trails of different sizes of road networks, we concluded that the default automatic snowplowing is significant less efficient comparing to the other methods of plowing as the grid size becomes larger. However, in some small samples where the grid size is small, for example a 5x5 grid, the default method can be faster than the other two since there are significant less roads to cover.
